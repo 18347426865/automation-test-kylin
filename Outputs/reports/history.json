@@ -1,0 +1,112 @@
+[
+    {
+        "success": 0,
+        "all": 1,
+        "fail": 0,
+        "skip": 0,
+        "error": 1,
+        "runtime": "10.30 S",
+        "begin_time": "2022-06-09 21:59:54",
+        "pass_rate": "0.00"
+    },
+    {
+        "success": 2,
+        "all": 2,
+        "fail": 0,
+        "skip": 0,
+        "error": 0,
+        "runtime": "57.03 S",
+        "begin_time": "2022-06-09 22:08:21",
+        "pass_rate": "100.00"
+    },
+    {
+        "success": 2,
+        "all": 2,
+        "fail": 0,
+        "skip": 0,
+        "error": 0,
+        "runtime": "61.51 S",
+        "begin_time": "2022-06-09 22:14:11",
+        "pass_rate": "100.00"
+    },
+    {
+        "success": 2,
+        "all": 3,
+        "fail": 1,
+        "skip": 0,
+        "error": 0,
+        "runtime": "62.59 S",
+        "begin_time": "2022-06-09 22:15:56",
+        "pass_rate": "66.67"
+    },
+    {
+        "success": 3,
+        "all": 3,
+        "fail": 0,
+        "skip": 0,
+        "error": 0,
+        "runtime": "76.56 S",
+        "begin_time": "2022-06-09 22:20:22",
+        "pass_rate": "100.00"
+    },
+    {
+        "success": 12,
+        "all": 12,
+        "fail": 0,
+        "skip": 0,
+        "error": 0,
+        "runtime": "347.16 S",
+        "begin_time": "2022-06-09 22:30:33",
+        "pass_rate": "100.00"
+    },
+    {
+        "success": 13,
+        "all": 13,
+        "fail": 0,
+        "skip": 0,
+        "error": 0,
+        "runtime": "284.21 S",
+        "begin_time": "2022-06-09 22:58:59",
+        "pass_rate": "100.00"
+    },
+    {
+        "success": 3,
+        "all": 12,
+        "fail": 8,
+        "skip": 1,
+        "error": 0,
+        "runtime": "239.62 S",
+        "begin_time": "2022-06-09 23:26:30",
+        "pass_rate": "25.00"
+    },
+    {
+        "success": 3,
+        "all": 12,
+        "fail": 9,
+        "skip": 0,
+        "error": 0,
+        "runtime": "190.77 S",
+        "begin_time": "2022-06-09 23:43:10",
+        "pass_rate": "25.00"
+    },
+    {
+        "success": 3,
+        "all": 12,
+        "fail": 8,
+        "skip": 1,
+        "error": 0,
+        "runtime": "248.66 S",
+        "begin_time": "2022-06-10 11:23:35",
+        "pass_rate": "25.00"
+    },
+    {
+        "success": 9,
+        "all": 12,
+        "fail": 1,
+        "skip": 2,
+        "error": 0,
+        "runtime": "415.16 S",
+        "begin_time": "2022-06-10 22:21:39",
+        "pass_rate": "75.00"
+    }
+]

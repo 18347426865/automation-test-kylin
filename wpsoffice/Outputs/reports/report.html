@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>WPS Office 测试报告</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src=" https://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/5.1.2/echarts.min.js"></script>
+    <!--    页面样式-->
+    <style type="text/css">
+        /*标题样式*/
+
+        .main {
+            background: rgba(7, 10, 88, 0.99);
+        }
+
+        .title {
+            width: auto;
+            height: 80px;
+            text-align: center;
+            font: bolder 30px/80px "Microsoft YaHei UI";
+            color: #fff;
+            background: rgba(3, 14, 70, 0.5);
+            border-bottom: solid 1px rgb(3, 14, 70);
+            margin-bottom: 10px;
+        }
+
+        .content-box {
+            height: 700px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .box1 {
+            flex: 3;
+        }
+
+        .box2 {
+            flex: 5;
+            margin: 0 10px;
+        }
+
+        .box3 {
+            flex: 4;
+        }
+
+        .panel {
+            position: relative;
+            border: 1px solid rgba(25, 186, 139, 0.17);
+            background: rgba(3, 14, 70, 0.5);
+            padding: 0 10px 50px;
+            margin-bottom: 10px;
+        }
+
+        .panel h2, .test_info h2 {
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .panel .chart {
+            height: 250px;
+        }
+
+        .panel .chart2 {
+            height: 350px;
+        }
+
+        .panel .desc {
+            height: 150px;
+        }
+
+        .panel .desc .info {
+            font: normal 18px/25px "Microsoft YaHei UI";
+            color: #fff;
+            display: flex;
+        }
+
+        .panel .desc .info div {
+            padding: 10px;
+            border: solid 1px #6c757d;
+        }
+
+        .panel .desc .info div span {
+            margin-left: 20px;
+        }
+
+
+        /* 执行信息样式   */
+        .test_info {
+            width: 100%;
+            padding: 20px 100px;
+            background: rgba(3, 14, 70, 0.5);
+
+        }
+
+        .table td, .table th {
+            border: solid 1px #5765a4 !important;
+            padding: 0 !important;
+            line-height: 40px;
+            text-align: center;
+            height: 40px;
+            color: #fff;
+        }
+
+        select {
+            border: 0;
+            padding: 0;
+            margin: 0;
+            height: 2em;
+            width: 8em;
+            margin-left: 2em;
+        }
+
+        option {
+            text-align: center;
+            height: 36px;
+            font: none 18px/36px "Microsoft YaHei UI";
+            color: #28a745 !important;
+        }
+
+        .test_log {
+            background: rgba(163, 171, 189, 0.15);
+            width: 100%;
+            height: 50px;
+            border-top: none;
+            border-bottom: none;
+            display: none;
+            text-align: left;
+        }
+
+        .test_log td {
+            text-align: left;
+            height: 30px;
+            margin: 0;
+            padding-left: 3em;
+            padding-right: 3em;
+            font: none 18px/24px "Microsoft YaHei UI";
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            color: #fff;
+            line-height: 22px;
+            font-size: 14px
+        }
+
+        .chart4 {
+            overflow: auto;
+            width: 100%;
+            height: 600px;
+
+        }
+
+        .chart4::-webkit-scrollbar {
+            width: 10px;
+
+        }
+
+        .chart4::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(4, 0, 225, 0.62);
+            background: #272789;
+            height: 10px;
+
+        }
+
+        .chart4::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 255, 0.54);
+            border-radius: 10px;
+            background: rgba(214, 214, 214, 0.64);
+
+        }
+
+        /*详细内容描述的小标题*/
+        .table_title {
+            text-align: center;
+            background: rgba(1, 2, 37, 0.72);
+            font: bold 18px/30px 'Microsoft YaHei UI';
+            color: #fff;
+            border-radius: 10px
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="main">
+    <div class="title">
+        WPS Office 测试报告
+    </div>
+    <div class="content-box">
+        <div class="box1">
+            <div class="panel">
+                <h2>执行结果</h2>
+                <div class="chart" id="char3"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel ">
+                <h2>成功占比</h2>
+                <div class="chart" id="char1"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="box2">
+            <div class="panel">
+                <h2>运行信息</h2>
+                <div class="desc">
+
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">开始时间</button>
+                            <span>2022-06-03 19:06:55</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">用例总数</button>
+                            <span>12</span>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">运行时长</button>
+                            <span>233.62 S</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm ">测试人员</button>
+                            <span>Yanrui Hu</span>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">成功用例</button>
+                            <span>12</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm ">通过率</button>
+                            <span>100.00%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>通过率趋势图</h2>
+                <div class="chart2" id="char2"></div>
+            </div>
+        </div>
+        <div class="box3">
+            <div class="panel">
+                <h2>历史构建结果</h2>
+                <div class="chart4">
+                    <table class="table" style="color: #d6d6d6;padding: 0">
+                        <thead>
+                        <tr>
+                            <th scope="col">执行时间</th>
+                            <th scope="col">用例总数</th>
+                            <th scope="col">成功用例数</th>
+                            <th scope="col">通过率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <th scope="row">2022-06-03 19:06:55</th>
+                            <td>12</td>
+                            <td>12</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 18:45:59</th>
+                            <td>12</td>
+                            <td>8</td>
+                            <td>66.67%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 18:39:39</th>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 18:16:40</th>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 17:24:13</th>
+                            <td>7</td>
+                            <td>7</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 17:17:46</th>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 16:31:57</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 16:31:20</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 16:19:35</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 16:04:57</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 15:59:40</th>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>100.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 15:57:34</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 15:49:24</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 15:47:43</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 11:25:59</th>
+                            <td>7</td>
+                            <td>6</td>
+                            <td>85.71%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 11:21:07</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">2022-06-03 11:14:39</th>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="test_info">
+        <h2>本次运行详情</h2>
+        <div class="table_data">
+
+            <table class="table" style="color: #fff">
+                <thead class="text-light" style="background: rgba(3, 14, 70, 0.5)">
+                <tr>
+                    <th scope="col" style="width: 5%;padding: 0">编号</th>
+                    <th scope="col" style="width: 20%;padding: 0">
+                        <span>测试类</span>
+                        <select id="testClass">
+                            <option>所有</option>
+
+                            <option>TestWpspdf</option>
+
+                            <option>TestEt</option>
+
+                            <option>TestWps</option>
+
+                            <option>TestWpp</option>
+
+                        </select>
+
+                    </th>
+                    <th scope="col" style="width: 15%;padding: 0">测试方法</th>
+                    <th scope="col" style="width: 20%;padding: 0">用例描述</th>
+                    <th scope="col" style="width: 15%;padding: 0">执行时间</th>
+                    <th scope="col" style="width: 20%;padding: 0">
+
+                        <span>执行结果</span>
+                        <select id="testResult">
+                            <option>所有</option>
+                            <option class="text-success">成功</option>
+                            <option class="text-danger">失败</option>
+                            <option class="text-warning">错误</option>
+                            <option class="text-info">跳过</option>
+                        </select>
+
+                    </th>
+                    <th scope="col" style="width: 10%;padding: 0">详细信息</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="case_">
+                    <td>1</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_1_create</td>
+                    <td>新建wps文字文档</td>
+                    <td>15.1s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 create 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], 'D': [38, 146, 24, 25], '从模板中新建': [100, 146, 84, 19], '口本机》磁盘（）home>huyanrui）文档': [690, 156, 307, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 156, 113, 20], '个': [516, 156, 17, 12], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], '打开': [74, 235, 28, 18], '我的电脑': [263, 270, 85, 22], '应用中心': [50, 292, 51, 16], 'Q办公小助手': [77, 329, 102, 18], '我的文档': [278, 321, 59, 19], 'home/huyanrui/文档': [325, 342, 114, 15], '我的桌面': [280, 382, 56, 17], '空文件夹': [855, 463, 59, 23], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+helloworld输入成功
+ctrl+s输入成功
+ctrl+a BackSpace输入成功
+testfile.wps输入成功
+Return输入成功
+<code object create_file at 0x7f2fcaf21030, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_create.py", line 39>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_1_create (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>2</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_2_save_as</td>
+                    <td>将wps文档另存为docx文档</td>
+                    <td>14.9s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 save_as 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '十：': [396, 155, 44, 16], '口本机）磁盘（）>home>huyanrui）文档': [692, 156, 303, 19], '常用位置': [243, 157, 51, 16], '名称': [1129, 155, 114, 22], '个': [516, 156, 15, 12], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.wps': [605, 219, 78, 23], 'WPS': [514, 230, 32, 10], '打开': [74, 235, 28, 18], '10KB': [1026, 231, 37, 20], '口本地文件': [603, 252, 67, 14], '今天19:07:15': [1049, 251, 80, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], 'Q办公小助手': [77, 329, 102, 18], '我的文档': [278, 321, 59, 19], 'home/huyanrui/文档': [325, 342, 114, 15], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '十：': [396, 155, 44, 16], '口本机）磁盘（）>home>huyanrui）文档': [692, 156, 303, 19], '常用位置': [243, 157, 51, 16], '名称': [1129, 155, 114, 22], '个': [516, 156, 15, 12], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.wps': [605, 219, 78, 23], 'WPS': [514, 230, 32, 10], '打开': [74, 235, 28, 18], '10KB': [1026, 231, 37, 20], '口本地文件': [603, 252, 67, 14], '今天19:07:15': [1049, 251, 80, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], 'Q办公小助手': [77, 329, 102, 18], '我的文档': [278, 321, 59, 19], 'home/huyanrui/文档': [325, 342, 114, 15], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+F12输入成功
+ctrl+a BackSpace输入成功
+testfile.docx输入成功
+Return输入成功
+<code object save_as_file at 0x7f2fcaf212f0, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_save_as.py", line 28>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_2_save_as (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>3</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_3_set_font</td>
+                    <td>字体增大三号</td>
+                    <td>19.6s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 set_font 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 155, 114, 22], '磁盘（>home>huyanrui>文档': [730, 157, 224, 15], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.docx': [607, 220, 78, 18], '打开': [74, 235, 28, 18], '10KB': [1026, 330, 35, 16], '口本地文件': [604, 352, 68, 18], '今天19:07:30': [1049, 251, 80, 19], '我的电脑': [263, 270, 85, 23], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 320, 78, 21], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [514, 329, 35, 15], '今天19:07:15': [1049, 350, 78, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is ['WPS文字', 'testfile.wps', 'Q查找命令', '三文件', '开始', '页面布局', '引用', '视图', '章节', '开发工具', '插入', '丰阅', '小：', '4质X', 'A', '2专田', 'Calibri', '10.5', 'A', 'ZA', 'AaBbCcAaBAaBbAaBbAaBb（', 'BIAXX', '1', '粘贴复制', 'A', '正文', '标题2', '格式刷', '标题1', '标题3', '文字工具', '查', 'helloworld', '剩余11天试用', '页码：1页面：1/1节：1/1设置值：2.5厘米', '字数：1拼写检查', '实时备份', '兼容模式', '2日国心', '100%', 'r.']
+string helloworld's count is 1
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [141, 32, 66, 17], 'Q查找命令': [1061, 64, 70, 18], '三文件': [41, 66, 47, 16], '开始': [323, 66, 29, 16], '页面布局': [430, 65, 48, 15], '引用': [490, 66, 24, 16], '视图': [587, 65, 28, 15], '章节': [635, 66, 30, 16], '开发工具': [694, 65, 52, 15], '插入': [371, 65, 22, 11], '丰阅': [539, 65, 21, 11], '小：': [1202, 66, 69, 19], '4质X': [63, 106, 90, 25], 'A': [403, 103, 12, 15], '2专田': [694, 104, 84, 20], 'Calibri': [187, 103, 42, 15], '10.5': [291, 103, 34, 15], 'ZA': [1118, 107, 28, 23], 'AaBbCcAaBAaBbAaBbAaBb（': [916, 108, 335, 23], 'BIAXX': [249, 129, 166, 21], '粘贴复制': [63, 129, 94, 19], '田·': [682, 129, 68, 25], '正文': [781, 130, 25, 17], '标题2': [911, 129, 43, 15], '格式刷': [130, 131, 40, 16], '标题1': [847, 131, 44, 16], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], '皂': [303, 279, 28, 17], 'helloworld': [391, 277, 76, 19], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：2.5厘米': [247, 671, 260, 14], '字数：1拼写检查': [519, 671, 124, 14], '实时备份': [629, 671, 79, 14], '兼容模式': [717, 672, 50, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+string helloworld's border size is [76, 19]
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [141, 32, 66, 17], 'Q查找命令': [1061, 64, 70, 18], '三文件': [41, 66, 47, 16], '开始': [323, 66, 29, 16], '页面布局': [430, 65, 48, 15], '引用': [490, 66, 24, 16], '视图': [587, 65, 28, 15], '章节': [635, 66, 30, 16], '开发工具': [694, 65, 52, 15], '插入': [371, 65, 22, 11], '丰阅': [539, 65, 21, 11], '小：': [1202, 66, 69, 19], '4质X': [63, 106, 90, 25], 'A': [403, 103, 12, 15], '2专田': [694, 104, 84, 20], 'Calibri': [187, 103, 42, 15], '10.5': [291, 103, 34, 15], 'ZA': [1118, 107, 28, 23], 'AaBbCcAaBAaBbAaBbAaBb（': [916, 108, 335, 23], 'BIAXX': [249, 129, 166, 21], '粘贴复制': [63, 129, 94, 19], '田·': [682, 129, 68, 25], '正文': [781, 130, 25, 17], '标题2': [911, 129, 43, 15], '格式刷': [130, 131, 40, 16], '标题1': [847, 131, 44, 16], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], '皂': [303, 279, 28, 17], 'helloworld': [391, 277, 76, 19], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：2.5厘米': [247, 671, 260, 14], '字数：1拼写检查': [519, 671, 124, 14], '实时备份': [629, 671, 79, 14], '兼容模式': [717, 672, 50, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+ctrl+bracketright ctrl+bracketright ctrl+bracketright输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [142, 34, 64, 14], 'Q查找命令': [1061, 64, 70, 18], '三文件': [40, 66, 47, 16], '开始': [324, 66, 28, 16], '页面布局': [430, 65, 48, 15], '引用': [491, 66, 26, 16], '视图': [587, 65, 28, 15], '章节': [635, 66, 30, 16], '开发工具': [694, 65, 52, 15], '插入': [371, 65, 22, 11], '丰阅': [539, 65, 21, 11], '小：': [1202, 66, 69, 19], '14': [286, 103, 29, 21], '剪切': [82, 104, 52, 20], 'A': [450, 129, 12, 15], '婚': [457, 105, 16, 22], '2专田': [694, 104, 84, 20], 'Calibri': [188, 103, 40, 15], 'AaBbCcAaBAaBbAaBbAaBb（': [916, 108, 335, 23], '=': [528, 124, 16, 29], '复制格式刷': [101, 129, 102, 21], 'BAXX': [249, 129, 167, 21], '1': [602, 128, 19, 18], '正文': [781, 130, 25, 17], '标题2': [911, 129, 43, 15], '粘贴了': [34, 130, 36, 14], '标题1': [847, 131, 44, 16], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], 'helloworld': [404, 289, 95, 21], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：2.5厘米行：1列：11': [284, 671, 335, 14], '字数：1/1拼写检查': [533, 671, 137, 14], '实时备份': [648, 671, 73, 14], '兼容模式': [735, 672, 52, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+string helloworld's border size is [95, 21]
+ctrl+s输入成功
+<code object set_font_size_of_string at 0x7f2fcaf21500, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_set_font.py", line 28>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_3_set_font (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>4</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_4_set_style</td>
+                    <td>设置文字样式为标题一</td>
+                    <td>13.4s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 set_style 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 155, 114, 22], '磁盘（>home>huyanrui>文档': [730, 157, 224, 15], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '9': [235, 211, 30, 22], '最近访问': [276, 211, 64, 19], 'testfile.docx': [607, 220, 78, 18], '打开': [74, 235, 28, 18], '10KB': [1026, 330, 35, 16], '口本地文件': [604, 352, 68, 18], '今天19:07:30': [1049, 251, 80, 19], '我的电脑': [265, 271, 82, 20], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 320, 78, 21], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [514, 329, 35, 15], '今天19:07:49': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 155, 114, 22], '磁盘（>home>huyanrui>文档': [730, 157, 224, 15], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.docx': [607, 220, 78, 18], '打开': [74, 235, 28, 18], '10KB': [1026, 330, 35, 16], '口本地文件': [604, 352, 68, 18], '今天19:07:30': [1049, 251, 80, 19], '我的电脑': [263, 270, 85, 23], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 320, 78, 21], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [514, 329, 35, 15], '今天19:07:49': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_19:08:00_350x100.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'AaBbCcE': [35, 28, 66, 21], 'AaBAaBbAaBbAaBb（': [196, 28, 257, 21], '正文': [31, 50, 25, 17], '标题1': [96, 49, 37, 15], '标题2': [161, 50, 39, 17], '标题3': [226, 49, 42, 15], '标题4': [292, 50, 42, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [142, 34, 64, 14], '日日': [172, 66, 153, 19], 'Q查找命令': [1062, 65, 68, 21], '三文件': [41, 66, 47, 16], '页面布局': [430, 65, 48, 15], '引用': [491, 66, 22, 16], '章节': [635, 66, 29, 16], '开发工具': [694, 65, 52, 15], '插入': [370, 65, 21, 11], '丰阅': [539, 65, 21, 11], '视图': [587, 65, 22, 11], '开始': [324, 66, 24, 10], '小：': [1202, 66, 69, 19], '22': [287, 103, 28, 21], 'A': [347, 130, 13, 12], '专田': [702, 103, 67, 19], 'AaBbCccAaBAaBbAaBbAaBb（': [916, 107, 336, 26], 'Calibri': [188, 103, 40, 15], 'BUA': [228, 128, 127, 18], '1': [602, 128, 19, 18], '粘贴复制': [63, 129, 94, 19], 'd': [382, 129, 16, 19], '正文': [781, 130, 24, 17], '标题2': [910, 129, 44, 15], '格式刷': [129, 131, 41, 16], '标题1': [846, 130, 64, 14], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], 'helloworld': [441, 316, 176, 33], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：3.1厘米': [240, 671, 249, 14], '实时备份': [632, 671, 73, 14], '兼容模式': [717, 672, 50, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+string helloworld's border size is [176, 33]
+ctrl+s输入成功
+<code object set_style at 0x7f2fcaf21710, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_set_style.py", line 28>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_4_set_style (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>5</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_5_center</td>
+                    <td>段落居中</td>
+                    <td>13.4s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 center 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 155, 114, 22], '磁盘（>home>huyanrui>文档': [730, 157, 224, 15], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.docx': [607, 220, 78, 18], '打开': [74, 235, 28, 18], '10KB': [1026, 330, 35, 16], '口本地文件': [604, 352, 68, 18], '今天19:07:30': [1049, 251, 80, 19], '我的电脑': [263, 270, 85, 23], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 320, 78, 21], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [514, 329, 35, 15], '今天19:08:05': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [141, 34, 65, 14], 'Q查找命令': [1062, 65, 68, 21], '三文件': [41, 66, 47, 16], '页面布局': [430, 65, 48, 15], '引用': [491, 66, 22, 16], '章节': [635, 66, 29, 16], '开发工具': [694, 65, 52, 15], '插入': [370, 65, 21, 11], '丰阅': [539, 65, 21, 11], '视图': [587, 65, 22, 11], '开始': [324, 66, 24, 10], '小：': [1202, 66, 69, 19], '22': [287, 103, 28, 21], 'A': [347, 130, 13, 12], '专田': [702, 103, 67, 19], 'AaBbCccAaBAaBbAaBbAaBb（': [916, 107, 336, 26], 'Calibri': [188, 103, 40, 15], 'ZA': [1118, 107, 28, 23], 'BUA': [228, 128, 127, 18], '1': [602, 128, 19, 18], '粘贴复制': [63, 129, 94, 19], '正文': [781, 130, 24, 17], '标题2': [910, 129, 44, 15], '格式刷': [129, 131, 41, 16], '标题1': [846, 130, 64, 14], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], 'helloworld': [441, 316, 176, 33], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：3.1厘米': [240, 671, 249, 14], '实时备份': [632, 671, 73, 14], '兼容模式': [717, 672, 50, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+点击成功
+Home输入成功
+ctrl+e输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [142, 34, 64, 14], '日日Q': [173, 66, 154, 19], 'Q查找命令': [1062, 65, 68, 21], '三文件': [41, 66, 47, 16], '页面布局': [430, 65, 48, 15], '视图': [587, 65, 28, 15], '章节': [635, 65, 30, 15], '开发工具': [694, 65, 52, 15], '插入': [370, 65, 21, 11], '用': [491, 65, 21, 11], '丰阅': [539, 65, 21, 11], '小：': [1202, 66, 69, 19], '22': [286, 103, 29, 21], '4质X': [63, 106, 90, 25], 'A': [347, 130, 13, 13], 'AaBbCccAaBAaBbAaBbAaBb（': [916, 107, 336, 26], 'Calibri': [188, 103, 40, 15], 'ZA': [1118, 107, 28, 23], 'E': [574, 104, 13, 14], 'BAX×': [248, 129, 167, 21], '粘贴复制': [63, 129, 94, 19], '三': [527, 127, 18, 20], '田': [684, 129, 63, 19], '正文': [781, 129, 25, 19], '标题2': [910, 129, 44, 15], '格式刷': [129, 131, 41, 16], '标题1': [847, 130, 62, 14], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], 'helloworld': [631, 316, 174, 33], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：3.1厘米': [247, 671, 260, 14], '实时备份': [632, 671, 72, 14], '兼容模式': [716, 672, 49, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+ctrl+s输入成功
+<code object center at 0x7f2fcaf21a80, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_center.py", line 28>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_5_center (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>6</td>
+                    <td class="TestWps">TestWps</td>
+                    <td>test_6_copy_and_paste</td>
+                    <td>复制并粘贴文字</td>
+                    <td>24.0s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 copy_and_paste 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [42, 34, 56, 18], '十新建': [125, 32, 46, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '常用位置': [243, 157, 51, 16], '十': [394, 156, 40, 14], 'C名称': [1129, 155, 114, 22], '磁盘（>home>huyanrui>文档': [730, 157, 224, 15], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.docx': [607, 220, 78, 18], '打开': [74, 235, 28, 18], '10KB': [1026, 330, 35, 16], '口本地文件': [604, 352, 68, 18], '今天19:07:30': [1049, 251, 80, 19], '我的电脑': [263, 270, 85, 23], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 320, 78, 21], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [514, 329, 35, 15], '今天19:08:16': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is ['WPS文字', 'testfile.wps', 'Q查找命令', '三文件', '页面布局', '视图', '章节', '开发工具', '插入', '用', '丰阅', '小：', '22', '4质X', 'A', 'AaBbCccAaBAaBbAaBbAaBb（', 'Calibri', 'A', 'ZA', 'E', 'A', 'BIA×X', '粘贴复制', '三', '田', '正文', '标题2', '格式刷', 'A', '标题1', '标题3', 'A', '文字工具', '查', 'helloworld', '剩余11天试用', '页码：1页面：1/1节：1/1设置值：3.1厘米', '实时备份', '兼容模式', '2日国心', '100%', 'r.']
+	 string helloworld's count is 1
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS文字': [40, 33, 60, 19], 'testfile.wps': [141, 34, 65, 14], 'Q查找命令': [1062, 65, 68, 21], '三文件': [41, 66, 47, 16], '开始': [324, 66, 28, 16], '页面布局': [430, 65, 48, 15], '视图': [587, 65, 28, 15], '章节': [635, 65, 30, 15], '开发工具': [694, 65, 52, 15], '插入': [370, 65, 21, 11], '用': [491, 65, 21, 11], '丰阅': [539, 65, 21, 11], '小：': [1202, 66, 69, 19], '22': [286, 103, 29, 21], '4质X': [63, 106, 90, 25], 'A': [347, 130, 13, 13], '专田': [702, 103, 67, 19], 'AaBbCccAaBAaBbAaBbAaBb（': [916, 107, 336, 26], 'Calibri': [188, 103, 40, 15], 'ZA': [1118, 107, 28, 23], 'E': [574, 104, 13, 14], 'BIA×X': [249, 130, 168, 23], '粘贴复制': [63, 129, 94, 19], '三': [527, 127, 18, 20], '田': [684, 129, 63, 19], '正文': [781, 129, 25, 19], '标题2': [910, 129, 44, 15], '格式刷': [129, 131, 41, 16], '标题1': [847, 130, 62, 14], '标题3': [977, 129, 49, 15], '文字工具': [1191, 132, 60, 19], '查': [1253, 130, 16, 13], 'helloworld': [631, 317, 172, 32], '剩余11天试用': [53, 669, 82, 17], '页码：1页面：1/1节：1/1设置值：3.1厘米': [247, 671, 260, 14], '实时备份': [632, 671, 72, 14], '兼容模式': [716, 672, 49, 16], '2日国心': [902, 672, 152, 18], '100%': [1018, 671, 43, 14], 'r.': [1254, 671, 13, 11]}
+ctrl+c输入成功
+End Return输入成功
+ctrl+v输入成功
+Return Return输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is ['WPS文字', 'testfile.wps', 'Q查找命令', '三文件', '开始', '页面布局', '引用', '章节', '开发工具', '插入', '丰阅', '视图', '小：', '未体', '！！', 'A', '10.5', 'ZA', 'A', 'AaBbCcAaBAaBbAaBbAaBb（', '1', '粘贴复制', 'A', '正文', '标题2', '格式刷', 'a', '标题1', '标题3', '文字工具', '查', 'helloworld', 'helloworld', '剩余11天试用', '页码：1页面：1/1节：1/1设置值：6.1厘米行：4列：1', '字数：2拼写检查', '实时备份', '兼容模式', '2日国心', '100%', 'r.']
+	 string helloworld's count is 2
+ctrl+s输入成功
+<code object copy_and_paste_string at 0x7f2fcaf21c90, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wps/TestCase/wps_copy_and_paste.py", line 28>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_6_copy_and_paste (wps.TestCase.wps_all.TestWps)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>7</td>
+                    <td class="TestWpspdf">TestWpspdf</td>
+                    <td>test_1_create</td>
+                    <td>新建PDF文档</td>
+                    <td>25.5s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 create 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1391x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPSPDF': [40, 33, 55, 19], 'WPS2019': [85, 85, 117, 23], '搜索云文档': [260, 86, 96, 21], '设置': [1351, 87, 49, 27], 'D': [39, 147, 27, 26], '从模板中新建': [98, 148, 85, 22], '口本机）磁盘（））home）huyanrui）文档': [698, 157, 315, 21], '常用位置': [243, 158, 51, 18], 'C名称': [1239, 156, 118, 24], '十：': [395, 156, 39, 12], '个': [515, 156, 17, 12], '了筛选': [1350, 158, 45, 18], '打开': [69, 193, 39, 23], '最近访问': [262, 211, 91, 23], 'testfile.wps': [609, 220, 86, 26], '10KB': [1137, 231, 34, 17], '应用中心': [49, 247, 51, 18], '本地文件': [604, 251, 65, 17], '今天19:08:40': [1160, 252, 81, 22], '我的电脑': [262, 271, 90, 26], 'Q': [44, 285, 35, 18], '办公小助手': [91, 287, 73, 22], '我的文档': [261, 326, 94, 21], '/home/huyanrui/文档': [323, 347, 136, 17], '口我的桌面': [261, 386, 92, 22], '/home/huyanrui/桌面': [321, 408, 142, 22], '扫码关注「WPS售后服务」': [100, 589, 140, 16], '客服热线：400-822-9012': [99, 612, 145, 23], '剩余11天试用': [101, 653, 77, 22]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1391x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPSPDF': [40, 33, 55, 19], 'WPS2019': [85, 85, 117, 23], '搜索云文档': [260, 86, 96, 21], '设置': [1351, 87, 49, 27], 'D': [39, 147, 27, 26], '从模板中新建': [98, 148, 85, 22], '口本机）磁盘（））home）huyanrui）文档': [698, 157, 315, 21], '常用位置': [243, 158, 51, 18], 'C名称': [1239, 156, 118, 24], '十：': [395, 156, 39, 12], '个': [515, 156, 17, 12], '了筛选': [1350, 158, 45, 18], '打开': [69, 193, 39, 23], '最近访问': [262, 211, 91, 23], 'testfile.wps': [609, 220, 86, 26], '10KB': [1137, 231, 34, 17], '应用中心': [49, 247, 51, 18], '本地文件': [604, 251, 65, 17], '今天19:08:40': [1160, 252, 81, 22], '我的电脑': [262, 271, 90, 26], 'Q': [44, 285, 35, 18], '办公小助手': [91, 287, 73, 22], '我的文档': [261, 326, 94, 21], '/home/huyanrui/文档': [323, 347, 136, 17], '口我的桌面': [261, 386, 92, 22], '/home/huyanrui/桌面': [321, 408, 142, 22], '扫码关注「WPS售后服务」': [100, 589, 140, 16], '客服热线：400-822-9012': [99, 612, 145, 23], '剩余11天试用': [101, 653, 77, 22]}
+alt+f f输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_506x470.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'常规权限设置': [62, 22, 94, 17], '保存到（T）': [44, 53, 53, 16], 'mome/huyanrui/文档testile.pd': [122, 79, 171, 17], '浏览（）': [444, 79, 51, 19], '页范围': [37, 114, 38, 16], 'O': [48, 142, 13, 11], '全部（A）': [83, 142, 46, 19], '当前页（E）': [89, 168, 54, 16], '所选内容（L）': [92, 194, 70, 16], '页（': [65, 219, 57, 21], '从（F）：1': [180, 220, 54, 16], '到（O）：1': [315, 220, 70, 16], '输出选项': [41, 258, 51, 16], '文档信息（Y）': [90, 281, 70, 19], '口书签（K）': [272, 281, 63, 16], '将标题样式转换为书签（V）': [321, 303, 161, 18], '超链接（H）': [75, 325, 79, 19], '将其他样式转换为书签（S）': [320, 326, 160, 18], '脚注和尾注链接（N）': [99, 347, 123, 14], '门将自定义样式转换为书签（U）': [328, 347, 172, 14], '口输出成功后自动关闭（X）': [85, 443, 151, 21], '取消（C）': [369, 444, 47, 21], '确定（）': [454, 445, 47, 19]}
+ctrl+a BackSpace输入成功
+testfile.pdf输入成功
+alt+s输入成功
+alt+o输入成功
+alt+F4输入成功
+alt+F4输入成功
+ctrl+w输入成功
+test_1_create (wpspdf.TestCase.wpspdf_all.TestWpspdf)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>8</td>
+                    <td class="TestEt">TestEt</td>
+                    <td>test_1_create</td>
+                    <td>新建wps表格文件</td>
+                    <td>14.9s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 create 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS表格': [41, 32, 55, 15], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [101, 146, 82, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（））home>huyanrui）文档': [692, 156, 304, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1128, 155, 116, 22], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.wps': [605, 219, 78, 23], '打开': [74, 235, 28, 18], '10KB': [1026, 231, 37, 20], '口本地文件': [603, 251, 69, 19], '今天19:08:40': [1048, 251, 79, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], 'Q办公小助手': [77, 329, 102, 18], '我的文档': [278, 321, 59, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+helloworld输入成功
+ctrl+s输入成功
+ctrl+a BackSpace输入成功
+testfile.et输入成功
+Return输入成功
+<code object create_file at 0x7f2fcaf27ea0, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../et/TestCase/test_create.py", line 40>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_1_create (et.TestCase.et_all.TestEt)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>9</td>
+                    <td class="TestEt">TestEt</td>
+                    <td>test_2_save_as</td>
+                    <td>将et表格文件保存为xlsx文件</td>
+                    <td>15.2s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 save_as 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS表格': [41, 32, 55, 15], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [101, 146, 82, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（）home>huyanrui）文档': [690, 156, 307, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1129, 155, 114, 22], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.et': [599, 220, 62, 18], '打开': [74, 235, 28, 18], '15KB': [1026, 229, 37, 23], '口本地文件': [604, 352, 68, 18], '今天19:09:38': [1049, 251, 80, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 319, 78, 23], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [513, 329, 39, 15], '10KB': [1025, 330, 33, 16], '今天19:08:40': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS表格': [41, 32, 55, 15], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [101, 146, 82, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（）home>huyanrui）文档': [690, 156, 307, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1129, 155, 114, 22], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.et': [599, 220, 62, 18], '打开': [74, 235, 28, 18], '15KB': [1026, 229, 37, 23], '口本地文件': [604, 352, 68, 18], '今天19:09:38': [1049, 251, 80, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 319, 78, 23], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [513, 329, 39, 15], '10KB': [1025, 330, 33, 16], '今天19:08:40': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+F12输入成功
+ctrl+a BackSpace输入成功
+testfile.xlsx输入成功
+Return输入成功
+<code object save_as_file at 0x7f2fcaf320e0, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../et/TestCase/test_save_as.py", line 27>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_2_save_as (et.TestCase.et_all.TestEt)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>10</td>
+                    <td class="TestWpp">TestWpp</td>
+                    <td>test_1_create</td>
+                    <td>新建wps演示文件</td>
+                    <td>14.7s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 create 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS演示': [41, 33, 58, 19], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [260, 86, 95, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（））home>huyanrui）文档': [692, 156, 304, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1128, 155, 116, 22], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.wps': [605, 219, 78, 23], '打开': [74, 235, 28, 18], '10KB': [1026, 231, 37, 20], '口本地文件': [603, 251, 69, 19], '今天19:08:40': [1048, 251, 79, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], 'Q办公小助手': [77, 329, 102, 18], '我的文档': [278, 321, 59, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+helloworld输入成功
+ctrl+s输入成功
+ctrl+a BackSpace输入成功
+testfile.pptx输入成功
+Return输入成功
+<code object create_file at 0x7f2fcaf32b30, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wpp/TestCase/wpp_create.py", line 39>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_1_create (wpp.TestCase.wpp_all.TestWpp)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>11</td>
+                    <td class="TestWpp">TestWpp</td>
+                    <td>test_2_save_as</td>
+                    <td>将pptx文件另存为 ppt文件</td>
+                    <td>16.1s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 save_as 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS演示': [41, 33, 58, 19], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（）home>huyanrui）文档': [690, 156, 307, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1129, 155, 114, 22], '个': [516, 156, 15, 12], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.pptx': [605, 219, 78, 23], '打开': [74, 235, 28, 18], '40KB': [1026, 229, 37, 23], '口本地文件': [604, 352, 68, 18], '今天19:10:16': [1048, 251, 81, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 319, 78, 23], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [513, 329, 39, 15], '10KB': [1025, 330, 33, 16], '今天19:08:40': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-03_1280x689.png
+正在尝试使用校园网的OCR服务......
+OCR result is {'WPS演示': [41, 33, 58, 19], '十新建': [124, 32, 47, 16], 'WPS2019': [85, 86, 120, 25], 'Q搜索云文档': [259, 86, 93, 20], '设置': [1240, 88, 47, 16], '从模板中新建': [100, 146, 84, 19], '十：': [394, 155, 40, 16], '口本机》磁盘（）home>huyanrui）文档': [690, 156, 307, 19], '常用位置': [243, 157, 51, 16], 'C名称': [1129, 155, 114, 22], '个': [516, 156, 15, 12], '了筛选': [1241, 157, 42, 16], '新建': [73, 191, 31, 22], '最近访问': [263, 211, 91, 24], 'testfile.pptx': [605, 219, 78, 23], '打开': [74, 235, 28, 18], '40KB': [1026, 229, 37, 23], '口本地文件': [604, 352, 68, 18], '今天19:10:16': [1048, 251, 81, 19], '我的电脑': [264, 271, 84, 20], '应用中心': [50, 292, 51, 16], '我的文档': [278, 321, 59, 19], 'testfile.wps': [605, 319, 78, 23], 'Q办公小助手': [77, 329, 102, 18], 'WPS': [513, 329, 39, 15], '10KB': [1025, 330, 33, 16], '今天19:08:40': [1048, 350, 79, 19], '我的桌面': [280, 382, 56, 17], '扫码关注「WPS售后服务」': [103, 595, 146, 14], '客服热线：400-822-9012': [102, 614, 147, 19], '剩余11天试用': [101, 652, 78, 18]}
+F12输入成功
+ctrl+a BackSpace输入成功
+testfile.ppt输入成功
+Return输入成功
+<code object save_as_file at 0x7f2fcaf32d40, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wpp/TestCase/wpp_save_as.py", line 27>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_2_save_as (wpp.TestCase.wpp_all.TestWpp)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+                <tr class="case_">
+                    <td>12</td>
+                    <td class="TestWpp">TestWpp</td>
+                    <td>test_3_show_ppt</td>
+                    <td>放映ppt文件</td>
+                    <td>13.2s</td>
+
+                    <td class="text-success">成功</td>
+
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+
+
+                            <pre>开始执行 show_ppt 测试用例
+-----------------应用启动失败--------------------
+F5输入成功
+Escape输入成功
+<code object show_ppt at 0x7f2fcaf32ea0, file "/home/huyanrui/KylinLabs/AutomationTest/wpsoffice/TestCase/../wpp/TestCase/show_ppt.py", line 29>  (*^▽^*)测试完成！
+
+ctrl+w输入成功
+test_3_show_ppt (wpp.TestCase.wpp_all.TestWpp)执行——>【通过】
+</pre>
+
+
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div style="height: 200px"></div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    const resulte = {
+            "success": `12`,
+            "all": `12`,
+            "fail": `0`,
+            "skip": '0',
+            "error": `0`,
+            "runtime": '233.62 S',
+            "begin_time": "233.62 S",
+            "pass_rate": '100.00',
+        }
+    ;
+    const history = [{'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.45 S', 'begin_time': '2022-06-03 11:14:39', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.34 S', 'begin_time': '2022-06-03 11:21:07', 'pass_rate': '0.00'}, {'success': 6, 'all': 7, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '117.57 S', 'begin_time': '2022-06-03 11:25:59', 'pass_rate': '85.71'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.52 S', 'begin_time': '2022-06-03 15:47:43', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.47 S', 'begin_time': '2022-06-03 15:49:24', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.48 S', 'begin_time': '2022-06-03 15:57:34', 'pass_rate': '0.00'}, {'success': 1, 'all': 1, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '22.35 S', 'begin_time': '2022-06-03 15:59:40', 'pass_rate': '100.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.51 S', 'begin_time': '2022-06-03 16:04:57', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '498.10 S', 'begin_time': '2022-06-03 16:19:35', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '10.30 S', 'begin_time': '2022-06-03 16:31:20', 'pass_rate': '0.00'}, {'success': 0, 'all': 1, 'fail': 0, 'skip': 0, 'error': 1, 'runtime': '1279.20 S', 'begin_time': '2022-06-03 16:31:57', 'pass_rate': '0.00'}, {'success': 1, 'all': 1, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '34.33 S', 'begin_time': '2022-06-03 17:17:46', 'pass_rate': '100.00'}, {'success': 7, 'all': 7, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '140.50 S', 'begin_time': '2022-06-03 17:24:13', 'pass_rate': '100.00'}, {'success': 3, 'all': 3, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '52.35 S', 'begin_time': '2022-06-03 18:16:40', 'pass_rate': '100.00'}, {'success': 2, 'all': 2, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '37.92 S', 'begin_time': '2022-06-03 18:39:39', 'pass_rate': '100.00'}, {'success': 8, 'all': 12, 'fail': 4, 'skip': 0, 'error': 0, 'runtime': '185.09 S', 'begin_time': '2022-06-03 18:45:59', 'pass_rate': '66.67'}, {'success': 12, 'all': 12, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '233.62 S', 'begin_time': '2022-06-03 19:06:55', 'pass_rate': '100.00'}];
+
+    var passRate = [];
+    var dTime = [];
+    history.forEach(function (item, index, array) {
+        passRate.push(item.pass_rate);
+        dTime.push(item.begin_time)
+    });
+    if (passRate.length === 1) {
+        passRate.unshift(0);
+        dTime.unshift(0)
+    }
+
+    function char01() {
+        let myChart = echarts.init(document.getElementById('char1'));
+        let option = {
+            color: ['#28a745', '#ffc107', '#dc3545', '#17a2b8'],
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)',
+                backgroundColor: 'rgba(3, 14, 70, 0.5)',
+                borderColor: '#333',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: "13"
+                },
+            },
+            legend: {
+                bottom: "0%",
+                // 小图标的宽度和高度
+                itemWidth: 10,
+                itemHeight: 10,
+                data: ['通过', '失败', '错误', '跳过'],
+                textStyle: {
+                    color: "rgba(255,255,255,.5)",
+                    fontSize: "12"
+                },
+            },
+            series: [
+                {
+                    name: '测试结果',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '20',
+                            fontWeight: 'bold',
+                            color: '#fff',
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: resulte.success, name: '通过'},
+                        {value: resulte.fail, name: '失败'},
+                        {value: resulte.error, name: '错误'},
+                        {value: resulte.skip, name: '跳过'}
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option)
+
+    }
+
+    char01();
+
+    //    大图
+    function char02() {
+
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById("char2"));
+        // 2. 指定配置和数据
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                formatter: '{a} <br/>{b}:  ({c}%)',
+                backgroundColor: 'rgba(3, 14, 70, 0.5)',
+                borderColor: '#333',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: "13"
+                },
+            },
+
+            grid: {
+                left: "10",
+                top: "30",
+                right: "10",
+                bottom: "0",
+                containLabel: true
+            },
+
+            xAxis: [{
+                type: "category",
+                boundaryGap: false,
+                show: false,
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.2)"
+                    }
+                },
+
+                data: dTime
+            },
+                {
+                    axisPointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    position: "bottom",
+                    offset: 20
+                }
+            ],
+
+            yAxis: [{
+                type: "value",
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                    }
+                },
+
+                splitLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                    }
+                }
+            }],
+            series: [{
+                name: "通过率",
+                type: "line",
+                smooth: true,
+                symbol: "circle",
+                symbolSize: 5,
+                showSymbol: true,
+                lineStyle: {
+                    normal: {
+                        color: "#0184d5",
+                        width: 2
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [{
+                                offset: 0,
+                                color: "rgba(1, 132, 213, 0.4)"
+                            },
+                                {
+                                    offset: 0.8,
+                                    color: "rgba(1, 132, 213, 0.1)"
+                                }
+                            ],
+                            false
+                        ),
+                        shadowColor: "rgba(0, 0, 0, 0.1)"
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: "#0184d5",
+                        borderColor: "rgba(221, 220, 107, .1)",
+                        borderWidth: 18
+                    }
+                },
+                data: passRate
+            },
+            ]
+        };
+        // 重新把配置好的新数据给实例对象
+        myChart.setOption(option);
+
+    }
+
+    char02();
+
+    function char03() {
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById("char3"));
+        var data = [resulte.success, resulte.fail, resulte.error, resulte.skip];
+        var titlename = ["通过用例", "失败用例", "错误用例", "跳过用例",];
+        var valdata = [resulte.all, resulte.all, resulte.all, resulte.all];
+        var myColor = ['#28a745', '#ffc107', '#dc3545', '#17a2b8'];
+        option = {
+            //图标位置
+            grid: {
+                top: "10%",
+                left: "22%",
+                bottom: "10%"
+            },
+            xAxis: {
+                show: false
+            },
+            yAxis: [{
+                show: true,
+                data: titlename,
+                inverse: true,
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    color: "#fff",
+
+                    rich: {
+                        lg: {
+                            backgroundColor: "#339911",
+                            color: "#fff",
+                            borderRadius: 15,
+                            align: "center",
+                            width: 15,
+                            height: 15
+                        }
+                    }
+                }
+            },
+                {
+                    show: false,
+                    inverse: true,
+                    data: valdata,
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: 12,
+                            color: "#fff"
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                }
+            ],
+            series: [{
+                type: "bar",
+                yAxisIndex: 0,
+                data: data,
+                barCategoryGap: 50,
+                barWidth: 18,
+                itemStyle: {
+                    normal: {
+                        barBorderRadius: 20,
+                        color: function (params) {
+                            var num = myColor.length;
+                            return myColor[params.dataIndex % num];
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: "right",
+                        formatter: "{c}条",
+                        color:"#fff",
+
+                    }
+                }
+            },
+                {
+                    type: "bar",
+                    yAxisIndex: 1,
+                    barCategoryGap: 50,
+                    data: valdata,
+                    barWidth: 20,
+                    itemStyle: {
+                        normal: {
+                            color: "none",
+                            borderColor: "#00c1de",
+                            borderWidth: 2,
+                            barBorderRadius: 15
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+
+    char03()
+
+</script>
+
+
+<script>
+    var tbodyTr = $('tbody .case_');
+    var testResult = $("#testResult");
+    var testClass = $("#testClass");
+    // <!--    用例执行详细信息显示切换-->
+    $(".btn_info").click(function () {
+        $(this).parent().parent().next().toggle();
+
+    });
+    // 当选择用例类之后触发
+    testClass.change(function () {
+        $('.test_log').hide();
+        var cls = $(this).val();
+        var res = testResult.val();
+        elementDisplay(cls, res);
+        sort()
+    });
+    testResult.change(function () {
+        var res = $(this).val();
+        var cls = testClass.val();
+        elementDisplay(cls, res);
+        sort()
+    });
+
+    function elementDisplay(cls, res) {
+        // 用例数据的显示
+        if (cls === "所有") {
+            if (res === "所有") {
+                tbodyTr.has('button').show();
+            } else if (res === '成功') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-success').show()
+
+            } else if (res === '错误') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-danger').show()
+
+            } else if (res === '失败') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-warning').show()
+
+            } else if (res === '跳过') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-info').show()
+            }
+        } else {
+            if (res === "所有") {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').show()
+            } else if (res === '成功') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-success').show()
+            } else if (res === '错误') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-danger').show()
+            } else if (res === '失败') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-warning').show()
+            } else if (res === '跳过') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-info').show()
+            }
+        }
+    }
+
+    function sort() {
+        //重新排列显示序号
+        // 选择所有可以见的tr
+        var visibleTr = tbodyTr.filter(":visible");
+
+        visibleTr.each(function (index, element) {
+            element.firstElementChild.innerHTML = index + 1;
+
+        })
+
+    }
+
+    $('.nav-tabs li').click(function () {
+        $(this).find('a').addClass('active');
+        $(this).siblings().find('a').removeClass('active');
+        $(this).parent().next().children('.tab-content div').eq($(this).index()).addClass('active show').siblings().removeClass('active show')
+    });
+
+</script>
+
+
+</body>
+</html>

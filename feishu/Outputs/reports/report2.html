@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>飞书 测试报告</title>
+
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.min.js"></script>
+    <!--    页面样式-->
+    <style type="text/css">
+        /*标题样式*/
+
+        .main {
+            background: rgba(7, 10, 88, 0.99);
+        }
+
+        .title {
+            width: auto;
+            height: 80px;
+            text-align: center;
+            font: bolder 30px/80px "Microsoft YaHei UI";
+            color: #fff;
+            background: rgba(3, 14, 70, 0.5);
+            border-bottom: solid 1px rgb(3, 14, 70);
+            margin-bottom: 10px;
+        }
+
+        .content-box {
+            height: 700px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .box1 {
+            flex: 3;
+        }
+
+        .box2 {
+            flex: 5;
+            margin: 0 10px;
+        }
+
+        .box3 {
+            flex: 4;
+        }
+
+        .panel {
+            position: relative;
+            border: 1px solid rgba(25, 186, 139, 0.17);
+            background: rgba(3, 14, 70, 0.5);
+            padding: 0 10px 50px;
+            margin-bottom: 10px;
+        }
+
+        .panel h2, .test_info h2 {
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #007bff;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .panel .chart {
+            height: 250px;
+        }
+
+        .panel .chart2 {
+            height: 350px;
+        }
+
+        .panel .desc {
+            height: 150px;
+        }
+
+        .panel .desc .info {
+            font: normal 18px/25px "Microsoft YaHei UI";
+            color: #fff;
+            display: flex;
+        }
+
+        .panel .desc .info div {
+            padding: 10px;
+            border: solid 1px #6c757d;
+        }
+
+        .panel .desc .info div span {
+            margin-left: 20px;
+        }
+
+
+        /* 执行信息样式   */
+        .test_info {
+            width: 100%;
+            padding: 20px 100px;
+            background: rgba(3, 14, 70, 0.5);
+
+        }
+
+        .table td, .table th {
+            border: solid 1px #5765a4 !important;
+            padding: 0 !important;
+            line-height: 40px;
+            text-align: center;
+            height: 40px;
+            color: #fff;
+        }
+
+        select {
+            border: 0;
+            padding: 0;
+            margin: 0;
+            height: 2em;
+            width: 8em;
+            margin-left: 2em;
+        }
+
+        option {
+            text-align: center;
+            height: 36px;
+            font: none 18px/36px "Microsoft YaHei UI";
+            color: #28a745 !important;
+        }
+
+        .test_log {
+            background: rgba(163, 171, 189, 0.15);
+            width: 100%;
+            height: 50px;
+            border-top: none;
+            border-bottom: none;
+            display: none;
+            text-align: left;
+        }
+
+        .test_log td {
+            text-align: left;
+            height: 30px;
+            margin: 0;
+            padding-left: 3em;
+            padding-right: 3em;
+            font: none 18px/24px "Microsoft YaHei UI";
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            color: #fff;
+            line-height: 22px;
+            font-size: 14px
+        }
+
+        .chart4 {
+            overflow: auto;
+            width: 100%;
+            height: 600px;
+
+        }
+
+        .chart4::-webkit-scrollbar {
+            width: 10px;
+
+        }
+
+        .chart4::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(4, 0, 225, 0.62);
+            background: #272789;
+            height: 10px;
+
+        }
+
+        .chart4::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 255, 0.54);
+            border-radius: 10px;
+            background: rgba(214, 214, 214, 0.64);
+
+        }
+
+        /*详细内容描述的小标题*/
+        .table_title {
+            text-align: center;
+            background: rgba(1, 2, 37, 0.72);
+            font: bold 18px/30px 'Microsoft YaHei UI';
+            color: #fff;
+            border-radius: 10px
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="main">
+    <div class="title">
+        飞书 测试报告
+    </div>
+    <div class="content-box">
+        <div class="box1">
+            <div class="panel">
+                <h2>执行结果</h2>
+                <div class="chart" id="char3"></div>
+                <div class="panel-footer"></div>
+            </div>
+            <div class="panel ">
+                <h2>成功占比</h2>
+                <div class="chart" id="char1"></div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+        <div class="box2">
+            <div class="panel">
+                <h2>运行信息</h2>
+                <div class="desc">
+
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">开始时间</button>
+                            <span>2022-06-09 20:15:41</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">用例总数</button>
+                            <span>13</span>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">运行时长</button>
+                            <span>281.76 S</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm ">测试人员</button>
+                            <span>Yanrui Hu</span>
+                        </div>
+                    </div>
+                    <div class="info">
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm">成功用例</button>
+                            <span>13</span>
+                        </div>
+                        <div style="flex:5">
+                            <button type="button" class="btn btn-primary btn-sm ">通过率</button>
+                            <span>100.00%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>通过率趋势图</h2>
+                <div class="chart2" id="char2"></div>
+            </div>
+        </div>
+        <div class="box3">
+            <div class="panel">
+                <h2>历史构建结果</h2>
+                <div class="chart4">
+                    <table class="table" style="color: #d6d6d6;padding: 0">
+                        <thead>
+                        <tr>
+                            <th scope="col">执行时间</th>
+                            <th scope="col">用例总数</th>
+                            <th scope="col">成功用例数</th>
+                            <th scope="col">通过率</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        
+                        <tr>
+                            <th scope="row">2022-06-09 20:15:41</th>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>100.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-09 19:42:37</th>
+                            <td>13</td>
+                            <td>9</td>
+                            <td>69.23%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-09 19:26:33</th>
+                            <td>13</td>
+                            <td>0</td>
+                            <td>0.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-08 22:15:47</th>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>100.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-07 14:36:59</th>
+                            <td>13</td>
+                            <td>12</td>
+                            <td>92.31%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 23:33:36</th>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>100.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 18:19:21</th>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>100.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 17:42:23</th>
+                            <td>13</td>
+                            <td>13</td>
+                            <td>100.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 14:23:59</th>
+                            <td>10</td>
+                            <td>8</td>
+                            <td>80.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 14:17:29</th>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>90.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 14:13:50</th>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>10.00%</td>
+                        </tr>
+                        
+                        <tr>
+                            <th scope="row">2022-06-05 14:08:25</th>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>10.00%</td>
+                        </tr>
+                        
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="test_info">
+        <h2>本次运行详情</h2>
+        <div class="table_data">
+
+            <table class="table" style="color: #fff">
+                <thead class="text-light" style="background: rgba(3, 14, 70, 0.5)">
+                <tr>
+                    <th scope="col" style="width: 5%;padding: 0">编号</th>
+                    <th scope="col" style="width: 20%;padding: 0">
+                        <span>测试类</span>
+                        <select id="testClass">
+                            <option>所有</option>
+                            
+                            <option>TestFeishu</option>
+                            
+                        </select>
+
+                    </th>
+                    <th scope="col" style="width: 15%;padding: 0">测试方法</th>
+                    <th scope="col" style="width: 20%;padding: 0">用例描述</th>
+                    <th scope="col" style="width: 15%;padding: 0">执行时间</th>
+                    <th scope="col" style="width: 20%;padding: 0">
+
+                        <span>执行结果</span>
+                        <select id="testResult">
+                            <option>所有</option>
+                            <option class="text-success">成功</option>
+                            <option class="text-danger">失败</option>
+                            <option class="text-warning">错误</option>
+                            <option class="text-info">跳过</option>
+                        </select>
+
+                    </th>
+                    <th scope="col" style="width: 10%;padding: 0">详细信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                <tr class="case_">
+                    <td>1</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_01_create_group</td>
+                    <td>创建群聊</td>
+                    <td>27.8s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 create_group 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:15:46_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 26, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:15:52_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'南开大学': [42, 15, 61, 20], '组织架构': [34, 60, 62, 22], '软件学院': [39, 103, 62, 18], '外部联系人': [39, 149, 73, 19], '新的联系人': [39, 196, 72, 19], '邮箱联系人': [39, 244, 73, 21], '我的群组': [33, 293, 60, 18], '服务台': [26, 341, 47, 21]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:15:57_800x100.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'我的群组': [52, 30, 66, 19], '8创建群组': [733, 33, 79, 20], '我创建的群组（10）': [75, 74, 109, 15], '我加入的群组（10）': [227, 74, 111, 20]}
+ctrl+v输入成功
+"测试专用" 粘贴成功!
+ctrl+Return输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:11_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+<code object create_group at 0x7f3dd8c92870, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/create_group.py", line 29>  (*^▽^*)测试完成！
+
+test_01_create_group (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>2</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_02_pin_group</td>
+                    <td>置顶群聊</td>
+                    <td>18.0s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 pin_group 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:14_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:19_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:24_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 63, 15], '胡艳不添加到置顶': [88, 96, 140, 26], '订阅口添加到稍后处理': [103, 135, 165, 19], '南开': [36, 155, 31, 17], '关闭消息通知': [115, 172, 114, 23], '消息': [36, 197, 32, 20], '您好：': [39, 215, 36, 17], '过移入会话盒子': [113, 210, 113, 20], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:29_355x130.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['软件体系软件测试葫芦嘛样', '测试专用']
+<code object pin_group at 0x7f3dd8c92240, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/pin_chat.py", line 30>  (*^▽^*)测试完成！
+
+test_02_pin_group (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>3</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_03_unpin_group</td>
+                    <td>取消置顶群聊</td>
+                    <td>17.6s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 unpin_group 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:32_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:37_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:42_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 64, 15], '胡艳取消置顶': [81, 96, 129, 26], '订阅口添加到稍后处理': [103, 135, 165, 19], '南开': [36, 155, 31, 17], '关闭消息通知': [115, 172, 114, 23], '消息': [36, 197, 32, 20], '您好：': [39, 215, 36, 17], '过移入会话盒子': [113, 210, 113, 20], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:47_355x130.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['软件体系软件测试葫芦嘛样']
+<code object unpin_group at 0x7f3dd8c923a0, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/pin_chat.py", line 55>  (*^▽^*)测试完成！
+
+test_03_unpin_group (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>4</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_04_add_deal_with_later</td>
+                    <td>添加到稍后处理</td>
+                    <td>15.0s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 add_deal_with_later 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:50_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:16:54_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:00_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 63, 15], '胡艳不添加到置顶': [88, 96, 140, 26], '订阅口添加到稍后处理': [103, 135, 165, 19], '南开': [36, 155, 31, 17], '关闭消息通知': [115, 172, 114, 23], '消息': [36, 197, 32, 20], '您好：': [39, 215, 36, 17], '过移入会话盒子': [113, 210, 113, 20], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+<code object add_deal_with_later at 0x7f3dd8c972f0, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/deal_with_later.py", line 30>  (*^▽^*)测试完成！
+
+test_04_add_deal_with_later (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>5</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_05_remove_deal_with_later</td>
+                    <td>从稍后处理中移除</td>
+                    <td>15.0s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 remove_deal_with_later 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:05_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:09_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:15_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 63, 15], '胡艳不添加到置顶': [88, 96, 140, 26], '订阅冈已处理': [75, 135, 109, 19], '南开': [36, 155, 32, 17], '年': [191, 155, 11, 10], '关闭消息通知': [115, 172, 114, 23], '消息': [35, 197, 34, 20], '过移入会话盒子': [128, 211, 142, 28], '您好：': [41, 215, 40, 17], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+<code object remove_deal_with_later at 0x7f3dd8c973a0, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/deal_with_later.py", line 50>  (*^▽^*)测试完成！
+
+test_05_remove_deal_with_later (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>6</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_06_disable_message_notification</td>
+                    <td>关闭消息通知</td>
+                    <td>15.0s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 disable_message_notification 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:20_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:24_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:30_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 63, 15], '胡艳不添加到置顶': [88, 96, 140, 26], '订阅口添加到稍后处理': [103, 135, 165, 19], '南开': [36, 155, 31, 17], '关闭消息通知': [115, 172, 114, 23], '消息': [36, 197, 32, 20], '您好：': [39, 215, 36, 17], '过移入会话盒子': [113, 210, 113, 20], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+<code object disable_message_notification at 0x7f3dd8c97710, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/message_notification.py", line 49>  (*^▽^*)测试完成！
+
+test_06_disable_message_notification (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>7</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_07_enable_message_notification</td>
+                    <td>开启消息通知</td>
+                    <td>15.5s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 enable_message_notification 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:35_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:40_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:45_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试': [48, 72, 63, 15], '胡艳不添加到置顶': [88, 96, 140, 26], '订阅口添加到稍后处理': [103, 135, 165, 19], '南开': [36, 155, 31, 17], '开启消息通知': [116, 172, 112, 23], '消息': [36, 197, 32, 20], '您好：': [38, 215, 35, 17], '过移入会话盒子': [113, 210, 113, 20], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+<code object enable_message_notification at 0x7f3dd8c97660, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/message_notification.py", line 29>  (*^▽^*)测试完成！
+
+test_07_enable_message_notification (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>8</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_08_search_group</td>
+                    <td>搜索群聊</td>
+                    <td>19.2s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 search_group 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:50_450x100.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'Q搜索': [223, 70, 49, 21]}
+ctrl+v输入成功
+"测试专用" 粘贴成功!
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:17:59_700x150.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'综合': [47, 34, 35, 23], '消息': [107, 34, 36, 23], '群组': [380, 34, 36, 23], '任务': [440, 34, 34, 23], '日程': [500, 34, 35, 23], '云文档': [78, 98, 44, 22], '应用': [243, 35, 35, 21], '联系人': [310, 35, 51, 21], '更多': [567, 34, 50, 22], '查看全部>': [600, 98, 69, 22]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:04_970x575.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['综合', '消息', '云文档', '应用', '联系人', '群组', '任务', '日程', '更多', '了筛选', '测试专用', '已经展示全部结果']
+Return输入成功
+<code object search at 0x7f3dd8c8cd40, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/search.py", line 29>  (*^▽^*)测试完成！
+
+test_08_search_group (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>9</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_09_send_message</td>
+                    <td>发送消息</td>
+                    <td>19.3s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 send_message 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:09_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:14_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞发起群聊': [66, 93, 90, 15], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [109, 216, 177, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+点击成功
+ctrl+v输入成功
+"Hello World!" 粘贴成功!
+Return输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:26_700x555.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['胡艳瑞发起群聊', '胡艳瑞', 'Hello World!']
+<code object send_message at 0x7f3dd8c92ea0, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/send_message.py", line 29>  (*^▽^*)测试完成！
+
+test_09_send_message (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>10</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_10_send_richtext</td>
+                    <td>发送富文本</td>
+                    <td>37.6s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 send_richtext 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:29_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:34_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 19], '胡艳瑞：HelloWorld！': [76, 93, 112, 17], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [110, 216, 178, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+点击成功
+ctrl+v输入成功
+"测试标题" 粘贴成功!
+Return输入成功
+ctrl+v输入成功
+"测试正文" 粘贴成功!
+Return输入成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:51_735x615.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'测试标题': [43, 32, 68, 21], '测试正文': [39, 61, 58, 19], '发送': [675, 575, 34, 21]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:18:56_700x555.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['胡艳瑞发起群聊', '胡艳瑞', 'Hello World!', '测试标题', '测试正文']
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:01_700x555.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is ['胡艳瑞发起群聊', '胡艳瑞', 'Hello World!', '测试标题', '测试正文']
+<code object send_richtext at 0x7f3dd8c970e0, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/send_richtext.py", line 30>  (*^▽^*)测试完成！
+
+test_10_send_richtext (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>11</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_11_send_image</td>
+                    <td>发送图片</td>
+                    <td>25.0s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 send_image 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:06_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:11_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞：测试标题': [67, 94, 98, 21], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [110, 216, 178, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+点击成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:18_150x370.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'团图片/视频': [57, 25, 91, 19], '本地文件': [55, 63, 86, 21], '口本地文件夹': [60, 101, 97, 16], '云文档': [47, 139, 75, 21], '图日程': [40, 177, 61, 20], '国个人名片': [54, 215, 88, 20], '山投票': [41, 252, 59, 21], '任务': [40, 290, 61, 21], '展开': [63, 343, 25, 13]}
+ctrl+v输入成功
+"~/feishu_test.png" 粘贴成功!
+Return输入成功
+Return输入成功
+test_11_send_image (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>12</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_12_send_file</td>
+                    <td>发送文件</td>
+                    <td>25.2s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 send_file 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:31_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:36_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [50, 74, 61, 20], '胡艳瑞：图片]': [59, 94, 82, 21], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [110, 216, 178, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+点击成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:44_150x370.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'团图片/视频': [57, 25, 91, 19], '本地文件': [55, 63, 86, 21], '口本地文件夹': [60, 101, 97, 16], '云文档': [47, 139, 75, 21], '图日程': [40, 177, 61, 20], '国个人名片': [54, 215, 88, 20], '山投票': [41, 252, 59, 21], '任务': [40, 290, 61, 21], '展开': [63, 343, 25, 13]}
+ctrl+v输入成功
+"~/feishu_test.txt" 粘贴成功!
+Return输入成功
+Return输入成功
+test_12_send_file (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+                <tr class="case_">
+                    <td>13</td>
+                    <td class="TestFeishu">TestFeishu</td>
+                    <td>test_13_delete_group</td>
+                    <td>删除群聊</td>
+                    <td>26.2s</td>
+                    
+                    <td class="text-success">成功</td>
+                    
+                    <td>
+                        <button type="button" class="btn btn_info btn-primary btn-sm">查看详情</button>
+                    </td>
+                </tr>
+
+                <tr class="test_log">
+
+                     <td colspan="7" class="small text-muted" style=" word-wrap:break-word; word-break:break-all">
+                        
+
+                            <pre>开始执行 delete_group 测试用例
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:19:57_160x600.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'消息': [112, 143, 25, 17], '日历': [112, 202, 25, 16], '云文档': [112, 260, 33, 16], '通讯录': [112, 317, 34, 16], '工作台': [111, 375, 33, 15], '收藏': [112, 433, 26, 17], '任务': [112, 491, 24, 16]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:20:01_200x455.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'@我未读1单聊稍后': [108, 28, 180, 18], '测试专用': [51, 74, 60, 19], '胡艳瑞：文件Jfeishu_test.t': [95, 95, 155, 22], '订阅号应用': [59, 135, 74, 16], '南开就业：招聘信息汇总2022年': [109, 155, 175, 14], '消息中心机器人': [70, 196, 96, 15], '您好，您今天还未进行防疫信息': [110, 216, 178, 18], '软件体系结构2022春': [86, 257, 131, 17], '林德福：好的老师！': [70, 277, 99, 15], '云文档助手机器人': [78, 317, 114, 16], '昨日你共收到1条点赞': [83, 338, 124, 14], '杨建国': [43, 379, 45, 17], '口胡艳瑞邀请你加入一个视步': [109, 400, 178, 19], '软件测试与维护-2022年春': [103, 440, 165, 17]}
+点击成功
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_20:20:09_360x690.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'设置': [335, 282, 27, 17], '测试专用': [99, 97, 60, 19], '八器': [281, 97, 86, 18], '专用': [41, 113, 27, 12], '编辑群信息': [101, 118, 62, 15], '群成员': [40, 180, 48, 18], 'Q搜索': [57, 217, 55, 21], '群机器人': [46, 335, 61, 20], '群管理': [41, 398, 47, 19], '群昵称': [41, 462, 47, 20], '添加我在本群的昵称': [94, 497, 127, 17], '口添加到置顶': [66, 551, 95, 18], '口添加到会话盒子': [80, 595, 123, 18], '添加到会话盒子后将不再接收提醒': [132, 615, 181, 14], '退出群组': [131, 658, 56, 15], '解散群组': [219, 658, 60, 19]}
+
+	Saved screenshot to ../Outputs/screenshots/2022-06-09_1208x732.png
+正在尝试使用校园网的OCR服务......
+使用校园网的服务失败! 尝试使用本地的OCR服务......
+OCR result is {'Q搜索': [857, 262, 55, 22], '测试专用': [156, 184, 60, 17], '设置': [836, 76, 39, 24], 'X': [1121, 77, 19, 18], '白': [1177, 77, 20, 19], '81': [491, 89, 26, 14], '软件体系软件测试葫芦嘛样': [141, 106, 131, 14], '全部@我未读1单聊稍后处理': [212, 138, 268, 22], '..': [348, 137, 18, 9], '消息': [32, 144, 21, 18], '胡艳瑞': [493, 151, 39, 19], '<器': [1081, 142, 87, 19], '编辑群信息': [902, 163, 64, 22], '20:19': [383, 183, 31, 15], 'Hello World!': [525, 188, 81, 17], '日历': [31, 203, 19, 20], '胡艳瑞：文件jfeishutest.txt': [202, 204, 153, 17], '群成员': [840, 225, 47, 20], '1': [1102, 226, 29, 15], '测试标题': [517, 232, 58, 19], '订阅号应用': [165, 245, 74, 19], '14:08': [382, 243, 34, 18], '云文档': [32, 260, 32, 20], '测试正文': [515, 261, 58, 19], '南开就业：招聘信息汇总2022年6月9日': [234, 265, 213, 17], '消息中心机器人': [174, 306, 98, 16], '12:00': [382, 304, 29, 15], '通讯录': [31, 318, 31, 20], '您好，您今天还未进行防疫信息填报，': [228, 326, 204, 18], '解散群组': [1019, 705, 69, 23], '软件体系结构2022春': [193, 366, 128, 18], '工作台': [32, 375, 33, 23], '10:32': [382, 365, 34, 19], '解散会移除所有群成员，并且无法再查看历史记录': [641, 374, 310, 17], '林德福：好的老师！': [175, 387, 99, 17], '器人': [862, 381, 28, 14], '10:29': [382, 426, 34, 18], '取消': [690, 427, 32, 20], '云文档助手机器人': [183, 428, 110, 19], '收藏': [32, 435, 24, 25], '解散': [781, 427, 37, 20], '昨日你共收到1条点赞': [188, 448, 124, 17], '杨建国': [147, 488, 47, 16], '昨天': [385, 670, 31, 20], '任务': [32, 491, 22, 15], '胡艳瑞邀请你加入一个视频会议': [230, 509, 208, 18], '群昵称': [841, 507, 46, 21], '软件测试与维护-2022年春': [209, 550, 166, 22], '添加我在本群的昵称': [893, 542, 127, 17], '刘恒：@所有人麻烦大家在【大作业报': [231, 570, 211, 17], 'feishu_test.txt': [586, 584, 94, 18], '口添加到置顶': [866, 596, 96, 17], '葫芦嘛样': [156, 610, 60, 19], '7Byte': [556, 611, 41, 23], '胡艳瑞：会议录制已完成': [190, 630, 131, 20], '口添加到会话盒子': [880, 640, 124, 17], '添加到会话盒子后将不再接收提醒': [934, 659, 179, 17], '会议助手机器人': [174, 671, 96, 16], '会议录制已完成': [170, 692, 88, 19], '发送给测试专用': [498, 687, 104, 19], '退出群组': [930, 703, 61, 19]}
+<code object delete_group at 0x7f3dd8c92b30, file "/home/huyanrui/KylinLabs/AutomationTest/feishu/TestCase/../../feishu/TestCase/delete_group.py", line 29>  (*^▽^*)测试完成！
+
+test_13_delete_group (__main__.TestFeishu)执行——>【通过】
+</pre>
+                        
+                        
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+
+        <div style="height: 200px"></div>
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    const resulte = {
+            "success": `13`,
+            "all": `13`,
+            "fail": `0`,
+            "skip": '0',
+            "error": `0`,
+            "runtime": '281.76 S',
+            "begin_time": "281.76 S",
+            "pass_rate": '100.00',
+        }
+    ;
+    const history = [{'success': 1, 'all': 10, 'fail': 0, 'skip': 0, 'error': 9, 'runtime': '45.14 S', 'begin_time': '2022-06-05 14:08:25', 'pass_rate': '10.00'}, {'success': 1, 'all': 10, 'fail': 0, 'skip': 0, 'error': 9, 'runtime': '48.00 S', 'begin_time': '2022-06-05 14:13:50', 'pass_rate': '10.00'}, {'success': 9, 'all': 10, 'fail': 1, 'skip': 0, 'error': 0, 'runtime': '144.72 S', 'begin_time': '2022-06-05 14:17:29', 'pass_rate': '90.00'}, {'success': 8, 'all': 10, 'fail': 2, 'skip': 0, 'error': 0, 'runtime': '147.33 S', 'begin_time': '2022-06-05 14:23:59', 'pass_rate': '80.00'}, {'success': 13, 'all': 13, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '187.83 S', 'begin_time': '2022-06-05 17:42:23', 'pass_rate': '100.00'}, {'success': 13, 'all': 13, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '191.83 S', 'begin_time': '2022-06-05 18:19:21', 'pass_rate': '100.00'}, {'success': 13, 'all': 13, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '186.70 S', 'begin_time': '2022-06-05 23:33:36', 'pass_rate': '100.00'}, {'success': 12, 'all': 13, 'fail': 1, 'skip': 0, 'error': 0, 'runtime': '177.98 S', 'begin_time': '2022-06-07 14:36:59', 'pass_rate': '92.31'}, {'success': 13, 'all': 13, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '182.64 S', 'begin_time': '2022-06-08 22:15:47', 'pass_rate': '100.00'}, {'success': 0, 'all': 13, 'fail': 0, 'skip': 0, 'error': 13, 'runtime': '40.64 S', 'begin_time': '2022-06-09 19:26:33', 'pass_rate': '0.00'}, {'success': 9, 'all': 13, 'fail': 4, 'skip': 0, 'error': 0, 'runtime': '341.74 S', 'begin_time': '2022-06-09 19:42:37', 'pass_rate': '69.23'}, {'success': 13, 'all': 13, 'fail': 0, 'skip': 0, 'error': 0, 'runtime': '281.76 S', 'begin_time': '2022-06-09 20:15:41', 'pass_rate': '100.00'}];
+
+    var passRate = [];
+    var dTime = [];
+    history.forEach(function (item, index, array) {
+        passRate.push(item.pass_rate);
+        dTime.push(item.begin_time)
+    });
+    if (passRate.length === 1) {
+        passRate.unshift(0);
+        dTime.unshift(0)
+    }
+
+    function char01() {
+        let myChart = echarts.init(document.getElementById('char1'));
+        let option = {
+            color: ['#28a745', '#ffc107', '#dc3545', '#17a2b8'],
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)',
+                backgroundColor: 'rgba(3, 14, 70, 0.5)',
+                borderColor: '#333',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: "13"
+                },
+            },
+            legend: {
+                bottom: "0%",
+                // 小图标的宽度和高度
+                itemWidth: 10,
+                itemHeight: 10,
+                data: ['通过', '失败', '错误', '跳过'],
+                textStyle: {
+                    color: "rgba(255,255,255,.5)",
+                    fontSize: "12"
+                },
+            },
+            series: [
+                {
+                    name: '测试结果',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '20',
+                            fontWeight: 'bold',
+                            color: '#fff',
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: resulte.success, name: '通过'},
+                        {value: resulte.fail, name: '失败'},
+                        {value: resulte.error, name: '错误'},
+                        {value: resulte.skip, name: '跳过'}
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option)
+
+    }
+
+    char01();
+
+    //    大图
+    function char02() {
+
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById("char2"));
+        // 2. 指定配置和数据
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                formatter: '{a} <br/>{b}:  ({c}%)',
+                backgroundColor: 'rgba(3, 14, 70, 0.5)',
+                borderColor: '#333',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: "13"
+                },
+            },
+
+            grid: {
+                left: "10",
+                top: "30",
+                right: "10",
+                bottom: "0",
+                containLabel: true
+            },
+
+            xAxis: [{
+                type: "category",
+                boundaryGap: false,
+                show: false,
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.2)"
+                    }
+                },
+
+                data: dTime
+            },
+                {
+                    axisPointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    position: "bottom",
+                    offset: 20
+                }
+            ],
+
+            yAxis: [{
+                type: "value",
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255,255,255,.6)",
+                        fontSize: 12
+                    }
+                },
+
+                splitLine: {
+                    lineStyle: {
+                        color: "rgba(255,255,255,.1)"
+                    }
+                }
+            }],
+            series: [{
+                name: "通过率",
+                type: "line",
+                smooth: true,
+                symbol: "circle",
+                symbolSize: 5,
+                showSymbol: true,
+                lineStyle: {
+                    normal: {
+                        color: "#0184d5",
+                        width: 2
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            0,
+                            1,
+                            [{
+                                offset: 0,
+                                color: "rgba(1, 132, 213, 0.4)"
+                            },
+                                {
+                                    offset: 0.8,
+                                    color: "rgba(1, 132, 213, 0.1)"
+                                }
+                            ],
+                            false
+                        ),
+                        shadowColor: "rgba(0, 0, 0, 0.1)"
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: "#0184d5",
+                        borderColor: "rgba(221, 220, 107, .1)",
+                        borderWidth: 18
+                    }
+                },
+                data: passRate
+            },
+            ]
+        };
+        // 重新把配置好的新数据给实例对象
+        myChart.setOption(option);
+
+    }
+
+    char02();
+
+    function char03() {
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = echarts.init(document.getElementById("char3"));
+        var data = [resulte.success, resulte.fail, resulte.error, resulte.skip];
+        var titlename = ["通过用例", "失败用例", "错误用例", "跳过用例",];
+        var valdata = [resulte.all, resulte.all, resulte.all, resulte.all];
+        var myColor = ['#28a745', '#ffc107', '#dc3545', '#17a2b8'];
+        option = {
+            //图标位置
+            grid: {
+                top: "10%",
+                left: "22%",
+                bottom: "10%"
+            },
+            xAxis: {
+                show: false
+            },
+            yAxis: [{
+                show: true,
+                data: titlename,
+                inverse: true,
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    color: "#fff",
+
+                    rich: {
+                        lg: {
+                            backgroundColor: "#339911",
+                            color: "#fff",
+                            borderRadius: 15,
+                            align: "center",
+                            width: 15,
+                            height: 15
+                        }
+                    }
+                }
+            },
+                {
+                    show: false,
+                    inverse: true,
+                    data: valdata,
+                    axisLabel: {
+                        textStyle: {
+                            fontSize: 12,
+                            color: "#fff"
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                }
+            ],
+            series: [{
+                type: "bar",
+                yAxisIndex: 0,
+                data: data,
+                barCategoryGap: 50,
+                barWidth: 18,
+                itemStyle: {
+                    normal: {
+                        barBorderRadius: 20,
+                        color: function (params) {
+                            var num = myColor.length;
+                            return myColor[params.dataIndex % num];
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: "right",
+                        formatter: "{c}条",
+                        color:"#fff",
+
+                    }
+                }
+            },
+                {
+                    type: "bar",
+                    yAxisIndex: 1,
+                    barCategoryGap: 50,
+                    data: valdata,
+                    barWidth: 20,
+                    itemStyle: {
+                        normal: {
+                            color: "none",
+                            borderColor: "#00c1de",
+                            borderWidth: 2,
+                            barBorderRadius: 15
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }
+
+    char03()
+
+</script>
+
+
+<script>
+    var tbodyTr = $('tbody .case_');
+    var testResult = $("#testResult");
+    var testClass = $("#testClass");
+    <!--    用例执行详细信息显示切换-->
+    $(".btn_info").click(function () {
+        $(this).parent().parent().next().toggle();
+
+    });
+    // 当选择用例类之后触发
+    testClass.change(function () {
+        $('.test_log').hide();
+        var cls = $(this).val();
+        var res = testResult.val();
+        elementDisplay(cls, res);
+        sort()
+    });
+    testResult.change(function () {
+        var res = $(this).val();
+        var cls = testClass.val();
+        elementDisplay(cls, res);
+        sort()
+    });
+
+    function elementDisplay(cls, res) {
+        // 用例数据的显示
+        if (cls === "所有") {
+            if (res === "所有") {
+                tbodyTr.has('button').show();
+            } else if (res === '成功') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-success').show()
+
+            } else if (res === '错误') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-danger').show()
+
+            } else if (res === '失败') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-warning').show()
+
+            } else if (res === '跳过') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.text-info').show()
+            }
+        } else {
+            if (res === "所有") {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').show()
+            } else if (res === '成功') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-success').show()
+            } else if (res === '错误') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-danger').show()
+            } else if (res === '失败') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-warning').show()
+            } else if (res === '跳过') {
+                tbodyTr.hide();
+                tbodyTr.has('button').has('.' + cls + '').has('.text-info').show()
+            }
+        }
+    }
+
+    function sort() {
+        //重新排列显示序号
+        // 选择所有可以见的tr
+        var visibleTr = tbodyTr.filter(":visible");
+
+        visibleTr.each(function (index, element) {
+            element.firstElementChild.innerHTML = index + 1;
+
+        })
+
+    }
+
+    $('.nav-tabs li').click(function () {
+        $(this).find('a').addClass('active');
+        $(this).siblings().find('a').removeClass('active');
+        $(this).parent().next().children('.tab-content div').eq($(this).index()).addClass('active show').siblings().removeClass('active show')
+    });
+
+</script>
+
+
+</body>
+</html>
